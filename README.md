@@ -175,6 +175,11 @@ nano /var/www/projectLEMP/info.php
 <?php
 phpinfo();
 ?>
-
 ```
+- Accessing the PHP Website
+![image](https://github.com/user-attachments/assets/f9d032eb-0181-488f-9ef9-d94005d2511a)
 
+### Step 7 — Retrieving data from MySQL database with PHP
+- we will create a test database (DB) with simple "To do list" and configure access to it, so the Nginx website would be able to query data from the DB and display it.
+- At the time of this writing, the native MySQL PHP library mysqlnd doesn’t support caching_sha2_authentication, the default authentication method for MySQL 8. We’ll need to create a new user with the mysql_native_password authentication method in order to be able to connect to the MySQL database from PHP.
+- We will create a database named tester and a user named tester,
