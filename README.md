@@ -267,5 +267,6 @@ h) Now accessing this page in  web browser by visiting the domain name or public
 http://3.111.214.134/todo_list.php
 ```
 
+![image](https://github.com/user-attachments/assets/11614dbf-1c6c-4876-b5e6-4692ca7513a1)
 
 
