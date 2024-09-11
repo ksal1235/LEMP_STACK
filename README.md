@@ -179,7 +179,93 @@ phpinfo();
 - Accessing the PHP Website
 ![image](https://github.com/user-attachments/assets/f9d032eb-0181-488f-9ef9-d94005d2511a)
 
-### Step 7 — Retrieving data from MySQL database with PHP
+### Step 7 — Retrieving data from MySQL database with PHP:
+
 - we will create a test database (DB) with simple "To do list" and configure access to it, so the Nginx website would be able to query data from the DB and display it.
 - At the time of this writing, the native MySQL PHP library mysqlnd doesn’t support caching_sha2_authentication, the default authentication method for MySQL 8. We’ll need to create a new user with the mysql_native_password authentication method in order to be able to connect to the MySQL database from PHP.
-- We will create a database named tester and a user named tester,
+- We will create a database named `tester_db` and a user named `tester_user`,
+
+a) First, connect to the MySQL using following command.
+```
+sudo mysql -p
+```
+![image](https://github.com/user-attachments/assets/463bcda6-89d4-4dd3-9c51-32471c8b1b45)
+
+
+b) Creating the database 'tester_db'.
+```
+CREATE DATABASE `tester_db`;
+```
+c) Creating the user with named 'tester_user'.
+
+```
+CREATE USER 'tester_user'@'%' IDENTIFIED WITH mysql_native_password BY 'Golu123!@#';
+```
+
+#### Breakdown:
+- CREATE USER: This creates a new user in MySQL.
+- 'example_user': The username of the new user.
+- '%': The host from which the user can connect. The % wildcard allows connections from any IP address.
+- IDENTIFIED WITH mysql_native_password: Specifies the authentication plugin (mysql_native_password in this case). This is used for backward compatibility.
+- BY 'PassWord.1': The password the user must use to authenticate.
+
+d) Granting the privileges to tester_user for tester_db
+
+```
+ GRANT ALL ON tester_db.* TO 'tester_user'@'%';
+```
+![image](https://github.com/user-attachments/assets/5f86e550-9abd-4e36-adc5-e0c96815254a)
+
+
+e) Test if the new user has the proper permissions by logging in to the MySQL console again.
+
+```
+mysql -u tester_user -p
+```
+![image](https://github.com/user-attachments/assets/0d01622d-e75e-4490-8989-af0c9dddeb95)
+
+f) we’ll create a test table named todo_list:
+
+```
+CREATE TABLE tester_db.todo_list (
+    item_id INT AUTO_INCREMENT,
+    content VARCHAR(255),
+    PRIMARY KEY (item_id)
+);
+
+```
+![image](https://github.com/user-attachments/assets/b1fbdc5d-182d-4bb1-aa66-adf1a23aed5e)
+
+
+g) Inserting a few rows of content in the test table. 
+
+```
+INSERT INTO tester_db.todo_list (content) VALUES ("My first important item");
+INSERT INTO tester_db.todo_list (content) VALUES ("My second important item");
+INSERT INTO tester_db.todo_list (content) VALUES ("My third important item");
+INSERT INTO tester_db.todo_list (content) VALUES ("My fourth important item");
+
+```
+
+h) To confirm that the data was successfully saved to your table, run:
+
+```
+SELECT * FROM tester_db.todo_list;
+```
+![image](https://github.com/user-attachments/assets/fa2c16b0-ca03-4ca8-8da1-8fb6079f504a)
+
+i) Now we can create a PHP script that will connect to MySQL and query for content
+
+```
+nano /var/www/projectLEMP/todo_list.php
+```
+![image](https://github.com/user-attachments/assets/7a0504a9-ddc8-4d6d-9e36-686755aedf91)
+
+h) Now accessing this page in  web browser by visiting the domain name or public IP
+
+```
+http://3.111.214.134/todo_list.php
+```
+
+
+
